@@ -13,6 +13,7 @@ export default class Gallery extends PureComponent {
     static propTypes = {
         ...View.propTypes,
         renderPage: PropTypes.func,
+        renderType: PropTypes.func,
         images: PropTypes.arrayOf(PropTypes.object),
         initialPage: PropTypes.number,
         scrollViewStyle: ViewPropTypes ? ViewPropTypes.style : View.propTypes.style,
@@ -228,7 +229,10 @@ export default class Gallery extends PureComponent {
     renderPage (pageData, pageId) {
         const { onViewTransformed, onTransformGestureReleased, errorComponent, imageComponent } = this.props;
         if (this.props.renderPage) {
-            return this.props.renderPage(pageData, pageId, { onViewTransformed, onTransformGestureReleased});
+            return this.props.renderPage(pageData, pageId, {onViewTransformed, onTransformGestureReleased});
+        }
+        if (pageData.type && this.props.renderType) {
+            return this.props.renderType(pageData, pageId, {imageRefs: this.imageRefs, onViewTransformed, onTransformGestureReleased});
         }
         return (
             <TransformableImage
